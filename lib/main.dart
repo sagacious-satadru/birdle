@@ -13,9 +13,54 @@ class MainApp extends StatelessWidget {
     return const MaterialApp(
       home: Scaffold(
         body: Center(
-          child: Text("Hello World! How's it going?"),
+          child: Tile("B", HitType.partial),
         ),
       ),
     );
+  }
+}
+
+class Tile extends StatelessWidget {
+  const Tile(this.letter, this.hitType, {super.key});
+
+  final String letter;
+  final HitType hitType;
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Container(
+      width: 60,
+      height: 60,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade300),
+        color: switch(hitType) {
+          HitType.hit => Colors.green,
+          HitType.partial => Colors.yellow,
+          HitType.miss => Colors.grey,
+          _ => Colors.white,
+        }
+      ),
+      child: Center(
+        child: Text(
+          letter.toUpperCase(),
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+      ),
+    );
+  }
+}
+
+
+class GamePage extends StatelessWidget {
+  GamePage({super.key});
+  // This object is part of the game.dart file.
+  // It manages wordle logic, and is outside the scope of this tutorial.
+  final Game _game = Game();
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: Replace with screen contents
+    return Container();
   }
 }
