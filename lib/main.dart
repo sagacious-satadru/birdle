@@ -65,22 +65,24 @@ class GamePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Column(spacing: 5.0, 
-      children: [
-        for (final guess in _game.guesses) 
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            spacing: 5.0,
-            children: [
-              for (final letter in guess)
-                Tile(letter.char, letter.type),
-            ],
+      child: Column(
+        spacing: 5.0,
+        children: [
+          for (final guess in _game.guesses)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              spacing: 5.0,
+              children: [
+                for (final letter in guess) Tile(letter.char, letter.type),
+              ],
+            ),
+          GuessInput(
+            onSubmitGuess: (guess) {
+              print(guess);
+            },
           ),
-        GuessInput(onSubmitGuess: (guess) {
-          print(guess);
-        })
-        
-      ]),
+        ],
+      ),
     );
   }
 }
@@ -93,6 +95,14 @@ class GuessInput extends StatelessWidget {
   final TextEditingController _textEditingController = TextEditingController();
 
   final FocusNode _focusNode = FocusNode();
+
+  void _handleSubmit() {
+    print(_textEditingController.text.trim());
+    onSubmitGuess(_textEditingController.text.trim());
+    _textEditingController.clear();
+    _focusNode.requestFocus();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -111,14 +121,15 @@ class GuessInput extends StatelessWidget {
               controller: _textEditingController,
               autofocus: true,
               focusNode: _focusNode,
-              onSubmitted: (_) {
-                // print(_textEditingController.text);
-                onSubmitGuess(_textEditingController.text.trim());
-                _textEditingController.clear();
-                _focusNode.requestFocus();
-              },
+              onSubmitted: (_) => _handleSubmit(),
             ),
           ),
+        ),
+        IconButton(
+          onPressed: _handleSubmit,
+          // onPressed: (_) => _handleSubmit(),
+          icon: const Icon(Icons.arrow_circle_up),
+          padding: EdgeInsets.zero,
         ),
       ],
     );
